@@ -60,3 +60,5 @@ real-world fintech backend architecture.
 4. Run the application:
 mvn spring-boot:run
 The API will be available at `http://localhost:8080`
+## 🔗 Related
+- [FinanceTracker Frontend](https://github.com/NRShah25/frontend)
