@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 public class TransactionRequest {
@@ -21,4 +22,6 @@ public class TransactionRequest {
 
     @NotNull(message = "Type is required")
     private Transaction.Type type;
+
+    private LocalDateTime transactionDate;
 }

@@ -13,32 +13,39 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    List<Transaction> findByUserOrderByDateDesc(User user);
+        List<Transaction> findByUserOrderByDateDesc(User user);
 
-    List<Transaction> findByUserAndCategory(User user,
-            Transaction.Category category);
+        List<Transaction> findByUserAndCategory(User user,
+                        Transaction.Category category);
 
-    List<Transaction> findByUserAndType(User user,
-            Transaction.Type type);
+        List<Transaction> findByUserAndType(User user,
+                        Transaction.Type type);
 
-    List<Transaction> findByUserAndDateBetween(User user,
-            LocalDateTime start, LocalDateTime end);
+        List<Transaction> findByUserAndDateBetween(User user,
+                        LocalDateTime start, LocalDateTime end);
 
-    @Query("SELECT SUM(t.amount) FROM Transaction t " +
-            "WHERE t.user = :user AND t.type = :type " +
-            "AND t.date BETWEEN :start AND :end")
-    BigDecimal sumByUserAndTypeAndDateBetween(User user,
-            Transaction.Type type,
-            LocalDateTime start,
-            LocalDateTime end);
+        @Query("SELECT SUM(t.amount) FROM Transaction t " +
+                        "WHERE t.user = :user AND t.type = :type " +
+                        "AND t.date BETWEEN :start AND :end")
+        BigDecimal sumByUserAndTypeAndDateBetween(User user,
+                        Transaction.Type type,
+                        LocalDateTime start,
+                        LocalDateTime end);
 
-    @Query("SELECT SUM(t.amount) FROM Transaction t " +
-            "WHERE t.user = :user AND t.type = :type " +
-            "AND t.category = :category " +
-            "AND t.date BETWEEN :start AND :end")
-    BigDecimal sumByUserAndTypeAndCategoryAndDateBetween(User user,
-            Transaction.Type type,
-            Transaction.Category category,
-            LocalDateTime start,
-            LocalDateTime end);
+        @Query("SELECT SUM(t.amount) FROM Transaction t " +
+                        "WHERE t.user = :user AND t.type = :type " +
+                        "AND t.category = :category " +
+                        "AND t.date BETWEEN :start AND :end")
+        BigDecimal sumByUserAndTypeAndCategoryAndDateBetween(User user,
+                        Transaction.Type type,
+                        Transaction.Category category,
+                        LocalDateTime start,
+                        LocalDateTime end);
+
+        @Query("SELECT MONTH(t.date) as month, t.type, SUM(t.amount) as total " +
+                        "FROM Transaction t " +
+                        "WHERE t.user = :user AND YEAR(t.date) = :year " +
+                        "GROUP BY MONTH(t.date), t.type " +
+                        "ORDER BY MONTH(t.date)")
+        List<Object[]> getMonthlyTotals(User user, int year);
 }

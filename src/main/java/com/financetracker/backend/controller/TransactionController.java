@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.Map;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -61,4 +61,14 @@ public class TransactionController {
                 userDetails.getUsername(), type, year, month);
         return ResponseEntity.ok(total);
     }
+
+    @GetMapping("/report")
+public ResponseEntity<List<Map<String, Object>>> getMonthlyReport(
+        @RequestParam int year,
+        @AuthenticationPrincipal UserDetails userDetails) {
+
+    List<Map<String, Object>> report = transactionService
+            .getMonthlyReport(userDetails.getUsername(), year);
+    return ResponseEntity.ok(report);
+}
 }
